@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPP - PEP 8 Reviewer</title>
+</head>
+<body style="font-family: sans-serif; max-width: 700px; margin: 60px auto;">
+    <h1>GPP — PEP 8 Learning Assistant</h1>
+
+    <form action="/review" method="post" enctype="multipart/form-data">
+        <input type="file" name="student_file" accept=".py" required>
+        <button type="submit">Submit for review</button>
+    </form>
+
+    {% if report %}
+        <h2>Review result</h2>
+        <pre style="background: #f4f4f4; padding: 20px; white-space: pre-wrap;">{{ report }}</pre>
+    {% endif %}
+</body>
+</html>
