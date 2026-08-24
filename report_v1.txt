@@ -1,0 +1,125 @@
+# PEP 8 Issues Found
+
+**Line 1:** `import os,sys`
+- Multiple imports on one line without space after comma
+- Fix: Put each import on its own line:
+```python
+import os
+import sys
+```
+(Also, `os` and `sys` are never used — unused imports should be removed.)
+
+**Line 2:** `def CalculateTotal( items ):`
+- Function name uses `CamelCase`; PEP 8 requires `snake_case` for functions
+- Extra spaces inside parentheses
+- Fix:
+```python
+def calculate_total(items):
+```
+
+**Line 3:** `Total=0`
+- Variable name should be lowercase (`snake_case`), not `Total`
+- Missing spaces around `=`
+- Fix:
+```python
+total = 0
+```
+
+**Line 5:** `Total = Total+i`
+- Missing spaces around `+`
+- Variable should be lowercase
+- Fix:
+```python
+total = total + i
+```
+
+**Line 6:** `return Total`
+- Should be `return total` (lowercase, matching renamed variable)
+
+**Line 8:** `class shopping_cart:`
+- Class names should use `CapWords` (PascalCase), not `snake_case`
+- Fix:
+```python
+class ShoppingCart:
+```
+
+**Line 9:** `def __init__(self,name):`
+- Missing space after comma
+- Fix:
+```python
+def __init__(self, name):
+```
+
+**Line 10:** `self.name=name`
+- Missing spaces around `=`
+- Fix:
+```python
+self.name = name
+```
+
+**Line 12:** `def add( self,item ):`
+- Extra spaces inside parentheses
+- Missing space after comma
+- Fix:
+```python
+def add(self, item):
+```
+
+**Line 13:** `self.x.append(item)`
+- `x` is a non-descriptive variable name; should be something meaningful like `self.items`
+- Fix:
+```python
+self.items.append(item)
+```
+(This also means updating `self.x = []` on the earlier line and `c.x` usage below.)
+
+**Line 15 (`self.x = []` initialization)**
+- Same issue as above — non-descriptive attribute name `x`
+- Fix: rename to `self.items = []`
+
+**Line 19:** `print( CalculateTotal(c.x) )`
+- Extra spaces inside parentheses
+- Uses old function name and non-descriptive attribute name
+- Fix:
+```python
+print(calculate_total(c.items))
+```
+
+---
+
+## Summary of Naming Convention Fixes
+| Original | Fixed | Reason |
+|---|---|---|
+| `CalculateTotal` | `calculate_total` | Functions use snake_case |
+| `Total` | `total` | Variables use snake_case |
+| `shopping_cart` | `ShoppingCart` | Classes use CapWords |
+| `self.x` | `self.items` | Descriptive naming |
+
+## Corrected Code
+```python
+def calculate_total(items):
+    total = 0
+    for i in items:
+        total = total + i
+    return total
+
+
+class ShoppingCart:
+    def __init__(self, name):
+        self.name = name
+        self.items = []
+
+    def add(self, item):
+        self.items.append(item)
+
+
+c = ShoppingCart("Anoop")
+c.add(10)
+c.add(20)
+print(calculate_total(c.items))
+```
+
+**Additional style notes:**
+- PEP 8 recommends **two blank lines** before top-level class/function definitions (added above).
+- PEP 8 recommends **one blank line** between methods inside a class (added above).
+- Unused imports (`os`, `sys`) should be removed entirely if not needed.
