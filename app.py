@@ -56,10 +56,13 @@ def index():
     return render_template("index.html", report=None)
 
 
+UPLOAD_FOLDER = Path("uploads")
+UPLOAD_FOLDER.mkdir(exist_ok=True)
+
 @app.route("/review", methods=["POST"])
 def review():
     uploaded = request.files["student_file"]
-    save_path = Path(uploaded.filename)
+    save_path = UPLOAD_FOLDER / uploaded.filename
     uploaded.save(save_path)
 
     report = review_file(save_path)
