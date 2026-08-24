@@ -1,0 +1,8 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+report_v1.txt
+report_v2.txt
+.env
+uploads/
