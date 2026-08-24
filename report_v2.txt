@@ -1,0 +1,98 @@
+# Code Review Report
+
+## SECTION 1 — Formatting Issues (from the linter)
+
+**Line 1: `E231 missing whitespace after ','` and `E401 multiple imports on one line`**
+```python
+import os,sys
+```
+- **What's wrong:** You're importing two modules (`os` and `sys`) on the same line, and there's no space after the comma separating them.
+- **Why it matters:** PEP 8 recommends one import per line so that it's easy to see at a glance what's being imported, and easy to add/remove imports without messy diffs. Missing whitespace after commas also hurts readability generally.
+- **How to fix:**
+```python
+import os
+import sys
+```
+
+**Line 2: `E302 expected 2 blank lines, found 0`**
+```python
+def CalculateTotal( items ):
+```
+- **What's wrong:** There should be two blank lines before a top-level function or class definition, but this function starts right after the imports with no blank lines.
+- **Why it matters:** Consistent spacing between top-level definitions makes it visually clear where one "block" of code (imports, function, class) ends and another begins.
+- **How to fix:** Add two blank lines between the imports and this function definition.
+
+**Line 2: `E201 whitespace after '('` and `E202 whitespace before ')'`**
+```python
+def CalculateTotal( items ):
+```
+- **What's wrong:** There's an extra space right after `(` and right before `)`.
+- **Why it matters:** Python doesn't care, but consistent, minimal spacing inside parentheses is a widely followed convention that makes code easier to scan.
+- **How to fix:**
+```python
+def CalculateTotal(items):
+```
+
+**Line 3: `E225 missing whitespace around operator`**
+```python
+Total=0
+```
+- **What's wrong:** No spaces around the `=` assignment operator.
+- **Why it matters:** Spacing around operators makes expressions easier to read at a glance.
+- **How to fix:**
+```python
+Total = 0
+```
+
+**Line 8: `E302 expected 2 blank lines, found 1`**
+```python
+class shopping_cart:
+```
+- **What's wrong:** Same issue as line 2 — only one blank line separates the function above from this class, but two are required.
+- **How to fix:** Add an extra blank line before the `class` statement.
+
+**Line 9: `E231 missing whitespace after ','`**
+```python
+def __init__(self,name):
+```
+- **What's wrong:** No space after the comma between `self` and `name`.
+- **How to fix:**
+```python
+def __init__(self, name):
+```
+
+**Line 10: `E225 missing whitespace around operator`**
+```python
+self.name=name
+```
+- **What's wrong:** No spaces around `=`.
+- **How to fix:**
+```python
+self.name = name
+```
+
+**Line 12: `E301 expected 1 blank line, found 0`**
+```python
+    def add( self,item ):
+```
+- **What's wrong:** Inside a class, methods should be separated by exactly one blank line, but there's none between `__init__` and `add`.
+- **How to fix:** Insert one blank line before `def add(...)`.
+
+**Line 12: `E201`, `E231`, `E202`** (same family as before)
+```python
+def add( self,item ):
+```
+- **What's wrong:** Whitespace after `(`, no whitespace after the comma, whitespace before `)`.
+- **How to fix:**
+```python
+def add(self, item):
+```
+
+**Line 15: `E305 expected 2 blank lines after class or function definition, found 1`**
+```python
+c = shopping_cart("Anoop")
+```
+- **What's wrong:** After the class definition ends, only one blank line separates it from this top-level executable code; two are expected.
+- **How to fix:** Add an extra blank line before this line.
+
+**Line 18: `E201`, `

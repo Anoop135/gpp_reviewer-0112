@@ -1,0 +1,136 @@
+# PEP 8 Issues Found
+
+**Line 1:** `import os,sys`
+- **Issue:** Multiple imports on one line, no space after comma.
+- **Fix:** Separate imports onto different lines:
+```python
+import os
+import sys
+```
+(Also note: neither `os` nor `sys` is actually used in the code — unused imports should be removed.)
+
+---
+
+**Line 2:** `def CalculateTotal( items ):`
+- **Issue 1:** Function name uses CapWords (PascalCase) instead of `snake_case`.
+- **Issue 2:** Extra spaces inside parentheses `( items )`.
+- **Fix:**
+```python
+def calculate_total(items):
+```
+
+---
+
+**Line 3:** `Total=0`
+- **Issue 1:** Variable name should be lowercase (`total`, not `Total`) — PEP 8 reserves CapWords for classes.
+- **Issue 2:** Missing spaces around `=`.
+- **Fix:**
+```python
+total = 0
+```
+
+---
+
+**Line 5:** `Total = Total+i`
+- **Issue:** Missing spaces around `+` operator; also `Total` should be lowercase.
+- **Fix:**
+```python
+total = total + i
+```
+
+---
+
+**Line 6:** `return Total`
+- **Issue:** Should be `return total` (lowercase, consistent with variable renaming above).
+
+---
+
+**Line 8:** `class shopping_cart:`
+- **Issue:** Class names should use CapWords (PascalCase), not snake_case.
+- **Fix:**
+```python
+class ShoppingCart:
+```
+
+---
+
+**Line 9:** `def __init__(self,name):`
+- **Issue:** No space after comma between `self,name`.
+- **Fix:**
+```python
+def __init__(self, name):
+```
+
+---
+
+**Line 10:** `self.name=name`
+- **Issue:** Missing spaces around `=`.
+- **Fix:**
+```python
+self.name = name
+```
+
+---
+
+**Line 12:** `def add( self,item ):`
+- **Issue 1:** Extra spaces inside parentheses.
+- **Issue 2:** No space after comma.
+- **Fix:**
+```python
+def add(self, item):
+```
+
+---
+
+**Line 11 & 12 (blank lines / spacing):**
+- **Issue:** PEP 8 recommends **one blank line** between methods inside a class, and **two blank lines** before/after top-level class and function definitions. Here there are no blank lines separating methods (`__init__` and `add`), and no two blank lines before the `class` definition (line 8) or after it.
+- **Fix:** Add blank lines:
+```python
+def CalculateTotal(items):
+    ...
+    return total
+
+
+class ShoppingCart:
+
+    def __init__(self, name):
+        ...
+
+    def add(self, item):
+        ...
+```
+
+---
+
+**Line 20:** `print( CalculateTotal(c.x) )`
+- **Issue:** Extra spaces inside parentheses.
+- **Fix:**
+```python
+print(calculate_total(c.x))
+```
+
+---
+
+**General/Naming Issues:**
+- Variable `self.x` (line 10) is a non-descriptive name; PEP 8 encourages meaningful names, e.g. `self.items`.
+- Function/method names should consistently use `snake_case`: `calculate_total`, `add`.
+- Class name should use `CapWords`: `ShoppingCart`.
+
+---
+
+### Summary Table
+
+| Line | Issue | Fix |
+|------|-------|-----|
+| 1 | Multiple imports on one line | Split into separate `import` statements |
+| 2 | Function name in CapWords; spaces inside parens | `def calculate_total(items):` |
+| 3 | Variable name capitalized; no spaces around `=` | `total = 0` |
+| 5 | No spaces around `+`; variable capitalized | `total = total + i` |
+| 6 | Capitalized variable name | `return total` |
+| 8 | Class name in snake_case | `class ShoppingCart:` |
+| 9 | No space after comma | `def __init__(self, name):` |
+| 10 | No spaces around `=` | `self.name = name` |
+| 10 | Non-descriptive attribute name `self.x` | Rename to `self.items` |
+| 12 | Spaces inside parens; no space after comma | `def add(self, item):` |
+| 8–12 | Missing blank lines between class/methods | Add 2 blank lines before class, 1 between methods |
+| 20 | Sp
