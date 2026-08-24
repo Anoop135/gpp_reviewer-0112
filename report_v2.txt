@@ -1,0 +1,58 @@
+# Code Review Report
+
+## SECTION 1 — Formatting Issues (from the linter)
+
+**Line 1:10 — E231 missing whitespace after ','**
+In `import os,sys`, there's no space after the comma. Python doesn't require this, but style conventions do, because it makes lists of items easier to read at a glance. Fix: `import os, sys`.
+
+**Line 1:10 — E401 multiple imports on one line**
+Still on `import os,sys` — the convention is one import per line so that it's easy to see (and edit, e.g. in version control diffs) exactly which modules are added or removed. Fix:
+```python
+import os
+import sys
+```
+
+**Line 2:1 — E302 expected 2 blank lines, found 0**
+The function definition `def CalculateTotal(items):` starts right after the imports with no blank lines in between. PEP 8 wants top-level functions and classes separated by two blank lines, so the code visually breaks into "sections." Fix: add two blank lines after the imports.
+
+**Line 2:20 — E201 whitespace after '('**
+In `CalculateTotal( items )`, there's a space right after the opening parenthesis. This extra space serves no purpose and is discouraged for consistency. Fix: `CalculateTotal(items)`.
+
+**Line 2:26 — E202 whitespace before ')'**
+Same issue, at the closing parenthesis of that same line. Fix: remove the space before `)`.
+
+**Line 3:10 — E225 missing whitespace around operator**
+`Total=0` needs spaces around `=` for readability. It should read `Total = 0`. Operators without spacing are hard to scan quickly, especially as expressions get more complex.
+
+**Line 8:1 — E302 expected 2 blank lines, found 1**
+Before `class shopping_cart:`, there's only 1 blank line instead of 2. Same rule as before — top-level definitions need two blank lines above them for visual separation.
+
+**Line 9:22 — E231 missing whitespace after ','**
+In `def __init__(self,name):`, there's no space after the comma between parameters. Fix: `def __init__(self, name):`.
+
+**Line 10:18 — E225 missing whitespace around operator**
+`self.name=name` is missing spaces around `=`. Fix: `self.name = name`.
+
+**Line 12:5 — E301 expected 1 blank line, found 0**
+Inside the class, the `add` method comes immediately after `__init__` with no blank line separating them. Methods within a class should have one blank line between them for readability.
+
+**Line 12:13 — E201 whitespace after '('**
+In `def add( self,item ):`, there's a space right after `(`. Fix: remove it.
+
+**Line 12:18 — E231 missing whitespace after ','**
+Same line, no space after the comma between `self` and `item`. Fix: `self, item`.
+
+**Line 12:23 — E202 whitespace before ')'**
+Same line, extra space before the closing `)`. Fix: remove it, giving `def add(self, item):`.
+
+**Line 15:1 — E305 expected 2 blank lines after class or function definition, found 1**
+After the `shopping_cart` class ends, the code that creates `c = shopping_cart("Anoop")` starts with only 1 blank line. Top-level code following a class/function definition also needs 2 blank lines before it, to clearly mark "we're done defining things, now here's the script logic."
+
+**Line 18:7 — E201 whitespace after '('**
+In `print( CalculateTotal(c.x) )`, there's a space right after the first `(`. Fix: remove it.
+
+**Line 18:27 — E202 whitespace before ')'**
+Same line, space before the final `)`. Fix: `print(CalculateTotal(c.x))`.
+
+**Line 18:29 — W292 no newline at end of file**
+The file doesn't end with a newline character. Most editors/tools expect text files to end with `\n` — some tools (and Git) will complain or misbehave otherwise. Fix: just press Enter after the last line before
