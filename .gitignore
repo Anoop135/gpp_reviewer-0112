@@ -5,4 +5,4 @@ __pycache__/
 report_v1.txt
 report_v2.txt
 .env
-uploads/
+uploads/pep_index.pkl

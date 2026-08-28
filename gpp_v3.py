@@ -36,8 +36,14 @@ def review_file(file_path):
     linter_output = run_linter(file_path)
     issues = linter_output if linter_output else "No formatting issues found."
 
+    if not Path("pep_index.pkl").exists():
+        print("No index found - building one now...")
+        from build_index import build_index
+        build_index()
+
     index = load_index()
     pep_context = get_pep_context(linter_output, index)
+    ...
 
     prompt = f"""You are a Python tutor for a beginner.
 
