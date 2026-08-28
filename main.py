@@ -1,13 +1,20 @@
 """
-GPP web UI - upload a .py file, get a PEP 8 review displayed on screen.
+GPP web UI - FastAPI version.
+Same review logic as the Flask version, different framework.
 """
 
 import subprocess
 from pathlib import Path
-from flask import Flask, request, render_template
+from fastapi import FastAPI, Request, UploadFile, File
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from anthropic import Anthropic
 
-app = Flask(__name__)
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+
+UPLOAD_FOLDER = Path("uploads")
+UPLOAD_FOLDER.mkdir(exist_ok=True)
 
 
 def run_linter(file_path):
@@ -50,24 +57,19 @@ SECTION 2 - Point out naming, docstring, or clarity issues the linter can't catc
             return block.text
     return ""
 
-
-@app.route("/")
-def index():
-    return render_template("index.html", report=None)
-
-
-UPLOAD_FOLDER = Path("uploads")
-UPLOAD_FOLDER.mkdir(exist_ok=True)
-
-@app.route("/review", methods=["POST"])
-def review():
-    uploaded = request.files["student_file"]
-    save_path = UPLOAD_FOLDER / uploaded.filename
-    uploaded.save(save_path)
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse(
+        request, "index.html", {"report": None}
+    )
+@app.post("/review", response_class=HTMLResponse)
+async def review(request: Request, student_file: UploadFile = File(...)):
+    save_path = UPLOAD_FOLDER / student_file.filename
+    contents = await student_file.read()
+    save_path.write_bytes(contents)
 
     report = review_file(save_path)
-    return render_template("index.html", report=report)
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
+    return templates.TemplateResponse(
+        request, "index.html", {"report": report}
+    )
+   
