@@ -1,0 +1,37 @@
+# Linter Report for `sample_student.py`
+
+## SECTION 1 — Explaining the Linter Findings
+
+**Line 1 — `import os,sys`**
+- **E401 (multiple imports on one line):** PEP 8 recommends putting each import on its own line. It should be:
+  ```python
+  import os
+  import sys
+  ```
+- **E231 (missing whitespace after ',')**: This ties into the "Pet Peeves" whitespace rules — commas should always be followed by a space, e.g. `import os, sys` (though here you actually want separate lines per the note above).
+
+**Line 2 — `def CalculateTotal( items ):`**
+- **E302 (expected 2 blank lines, found 0):** PEP 8 says top-level function and class definitions should be surrounded by two blank lines. This function starts right after the imports.
+- **E201 (whitespace after '(')** and **E202 (whitespace before ')')**: PEP 8's "Pet Peeves" section says: *"Avoid extraneous whitespace... Immediately inside parentheses, brackets or braces"* — i.e., write `CalculateTotal(items)`, not `CalculateTotal( items )`.
+
+**Line 3 — `Total=0`**
+- **E225 (missing whitespace around operator):** PEP 8 states operators like `=` should have space on both sides for readability: `Total = 0`, similar to the guideline shown: `i = i + 1`.
+
+**Line 8 — `class shopping_cart:`**
+- **E302:** Same rule as before — a class definition also needs two blank lines above it separating it from the code before.
+
+**Line 9 — `def __init__(self,name):`**
+- **E231:** Missing space after the comma — should be `def __init__(self, name):`.
+
+**Line 10 — `self.name=name`**
+- **E225:** Same operator-spacing rule as before — should be `self.name = name`.
+
+**Line 12 — `def add( self,item ):`**
+- **E301 (expected 1 blank line, found 0):** PEP 8 expects a blank line between methods inside a class for readability.
+- **E201/E202:** Same as before — no spaces should hug the inside of parentheses.
+- **E231:** Missing space after the comma between `self` and `item`.
+
+**Line 15 — `c = shopping_cart("Anoop")`**
+- **E305 (expected 2 blank lines after class or function definition, found 1):** After a class or function block ends, PEP 8 wants 2 blank lines before the next top-level statement (here, the start of your "main" script code).
+
+**Line 18 — `print( CalculateTotal(
