@@ -1,0 +1,23 @@
+# Python Style Report for `sample_student.py`
+
+## SECTION 1 — Explaining the Linter Findings
+
+### Line 1: `import os,sys`
+- **E401 (multiple imports on one line)** and **E231 (missing whitespace after ',')**
+- PEP 8 says imports should usually be on separate lines. Even though the excerpt provided doesn't cover E401 directly, PEP 8's general import guidance is: one import per line makes it easy to see what's being added/removed in version control and easy to read at a glance.
+- E231 is about the comma: PEP 8's whitespace rules require a space after commas (just like you'd write `os, sys`), the same logic that requires whitespace after commas in function calls like `spam(ham, eggs)`.
+- **Fix:**
+  ```python
+  import os
+  import sys
+  ```
+
+### Line 2: `def CalculateTotal( items ):`
+- **E302 (expected 2 blank lines, found 0)** — PEP 8 wants top-level function and class definitions separated by two blank lines. This makes it visually clear where one block of code ends and another begins.
+- **E201/E202 (whitespace after '(' / before ')')** — This is a direct example of the PEP 8 "Pet Peeves" section you were given:
+  > "Avoid extraneous whitespace... Immediately inside parentheses, brackets or braces: `spam(ham[1], {eggs: 2})` — not `spam( ham[1], {eggs: 2} )`"
+  Your code has spaces right after `(` and right before `)`, which is exactly what this rule warns against.
+- **Fix:** `def CalculateTotal(items):`
+
+### Line 3: `Total=0`
+- **E225 (missing whitespace around operator)** — PEP 8 requires spaces around assignment operators, similar to the guidance given for binary operators: *"always have the same amount of whitespace on both sides of a binary operator."* Although your example excerpt discusses arithmetic operators specifically,
