@@ -1,0 +1,13 @@
+Here is the original code:
+{code}
+
+Here is a review of it:
+{review}
+
+Does this review cover EVERY function/class in the code for naming,
+docstring, and clarity issues (Section 2)? And does it explain every
+single linter finding listed here: {linter_output}?
+
+Answer with exactly one of:
+COMPLETE
+INCOMPLETE: <a short, specific note on what's missing>

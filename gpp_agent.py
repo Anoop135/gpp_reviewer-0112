@@ -16,6 +16,8 @@ from retrieve import load_index, retrieve_relevant_chunks
 MAX_PASSES = 2  # each extra pass = another full API call; 2 balances
                 # thoroughness against cost for a beginner-facing tool
 
+PROMPTS_FOLDER = Path("prompts")
+
 
 # --- The shared state every node reads from and writes to ---
 class GPPState(TypedDict):
@@ -26,6 +28,13 @@ class GPPState(TypedDict):
     pass_count: int
     is_complete: bool
     missed_feedback: str
+
+
+# --- Prompt loading ---
+def load_prompt(name, **values):
+    """Load a prompt template from prompts/ and fill in the placeholders."""
+    template = (PROMPTS_FOLDER / f"{name}.txt").read_text(encoding="utf-8")
+    return template.format(**values)
 
 
 # --- Reused helpers from earlier versions ---
@@ -51,7 +60,7 @@ def call_claude(prompt):
     return ""
 
 
-# --- Node 1: review the code (same as v3, but can incorporate feedback) ---
+# --- Node 1: review the code ---
 def review_node(state: GPPState) -> dict:
     print(f"\n[Pass {state['pass_count'] + 1}] Reviewing...")
 
@@ -65,26 +74,13 @@ Make sure to address it this time.
 
     issues = state["linter_output"] or "No formatting issues found."
 
-    prompt = f"""You are a Python tutor for a beginner.
-
-Code:
-```python
-{state['code']}
-```
-
-Linter findings (trust these line numbers):
-{issues}
-
-Relevant PEP 8 / PEP 257 text:
-{state['pep_context']}
-{extra_instruction}
-
-Write a two-section report:
-SECTION 1 - Explain each linter issue in plain English, referencing
-the PEP text above where relevant.
-SECTION 2 - Point out naming, docstring, or clarity issues the
-linter can't catch.
-"""
+    prompt = load_prompt(
+        "review",
+        code=state["code"],
+        linter_output=issues,
+        pep_context=state["pep_context"],
+        extra_instruction=extra_instruction,
+    )
 
     review = call_claude(prompt)
     return {
@@ -97,28 +93,19 @@ linter can't catch.
 def check_completeness_node(state: GPPState) -> dict:
     print(f"[Pass {state['pass_count']}] Checking completeness...")
 
-    prompt = f"""Here is the original code:
-```python
-{state['code']}
-```
-
-Here is a review of it:
-{state['review']}
-
-Does this review cover EVERY function/class in the code for naming,
-docstring, and clarity issues (Section 2)? And does it explain every
-single linter finding listed here: {state['linter_output']}?
-
-Answer with exactly one of:
-COMPLETE
-INCOMPLETE: <a short, specific note on what's missing>
-"""
+    prompt = load_prompt(
+        "completeness_check",
+        code=state["code"],
+        review=state["review"],
+        linter_output=state["linter_output"],
+    )
 
     check = call_claude(prompt)
-    print(f"  -> {check.strip()}")   
-    is_complete = check.strip().upper().startswith("COMPLETE")
+    print(f"  -> {check.strip()}")
 
+    is_complete = check.strip().upper().startswith("COMPLETE")
     missed_feedback = "" if is_complete else check
+
     return {
         "is_complete": is_complete,
         "missed_feedback": missed_feedback,
