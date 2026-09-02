@@ -9,6 +9,7 @@ from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from anthropic import Anthropic
+import markdown
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -69,7 +70,8 @@ async def review(request: Request, student_file: UploadFile = File(...)):
     save_path.write_bytes(contents)
 
     report = review_file(save_path)
+    report_html = markdown.markdown(report, extensions=["fenced_code", "tables"])
     return templates.TemplateResponse(
-        request, "index.html", {"report": report}
+        request, "index.html", {"report": report_html}
     )
    

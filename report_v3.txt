@@ -1,23 +1,59 @@
-# Python Style Report for `sample_student.py`
+# SECTION 1 — Linter Findings Explained
 
-## SECTION 1 — Explaining the Linter Findings
-
-### Line 1: `import os,sys`
-- **E401 (multiple imports on one line)** and **E231 (missing whitespace after ',')**
-- PEP 8 says imports should usually be on separate lines. Even though the excerpt provided doesn't cover E401 directly, PEP 8's general import guidance is: one import per line makes it easy to see what's being added/removed in version control and easy to read at a glance.
-- E231 is about the comma: PEP 8's whitespace rules require a space after commas (just like you'd write `os, sys`), the same logic that requires whitespace after commas in function calls like `spam(ham, eggs)`.
-- **Fix:**
+**Line 1: `import os,sys`**
+- **E401 (multiple imports on one line)** — PEP 8 says each import should generally be on its own line. Better:
   ```python
   import os
   import sys
   ```
+- **E231 (missing whitespace after ',')** — Should be `import os, sys` if you were combining them, but since E401 says not to combine them anyway, this becomes moot once you split the imports.
 
-### Line 2: `def CalculateTotal( items ):`
-- **E302 (expected 2 blank lines, found 0)** — PEP 8 wants top-level function and class definitions separated by two blank lines. This makes it visually clear where one block of code ends and another begins.
-- **E201/E202 (whitespace after '(' / before ')')** — This is a direct example of the PEP 8 "Pet Peeves" section you were given:
-  > "Avoid extraneous whitespace... Immediately inside parentheses, brackets or braces: `spam(ham[1], {eggs: 2})` — not `spam( ham[1], {eggs: 2} )`"
-  Your code has spaces right after `(` and right before `)`, which is exactly what this rule warns against.
-- **Fix:** `def CalculateTotal(items):`
+**Line 2: `def CalculateTotal( items ):`**
+- **E302 (expected 2 blank lines, found 0)** — PEP 8 requires top-level function/class definitions to be separated by two blank lines. There's no blank line before this function.
+- **E201 (whitespace after '(')** and **E202 (whitespace before ')')** — PEP 8's "Pet Peeves" section says: *"Avoid extraneous whitespace... immediately inside parentheses, brackets or braces."* So `( items )` should be `(items)`.
 
-### Line 3: `Total=0`
-- **E225 (missing whitespace around operator)** — PEP 8 requires spaces around assignment operators, similar to the guidance given for binary operators: *"always have the same amount of whitespace on both sides of a binary operator."* Although your example excerpt discusses arithmetic operators specifically,
+**Line 3: `Total=0`**
+- **E225 (missing whitespace around operator)** — PEP 8 says binary operators like `=` should have consistent spacing: `i = i + 1` is correct style, so this should be `Total = 0`.
+
+**Line 8: `class shopping_cart:`**
+- **E302** — Same rule as before: two blank lines are needed before a class definition. Only one blank line exists here.
+
+**Line 9: `def __init__(self,name):`**
+- **E231 (missing whitespace after ',')** — Should be `def __init__(self, name):`. Commas need a space after them for readability.
+
+**Line 10: `self.name=name`**
+- **E225** — Same as before: needs spaces around `=`. Should be `self.name = name`.
+
+**Line 12: `def add( self,item ):`**
+- **E301 (expected 1 blank line, found 0)** — Methods inside a class should be separated by one blank line each; there isn't one before `add`.
+- **E201 / E202** — Same whitespace-inside-parentheses issue as before: `( self,item )` → `(self, item)`.
+- **E231** — Missing space after comma again: `self,item` → `self, item`.
+
+**Line 15: after class definition**
+- **E305 (expected 2 blank lines after class or function definition)** — Once you finish defining a class/function, top-level code (like `c = shopping_cart(...)`) needs two blank lines of separation.
+
+**Line 18: `print( CalculateTotal(c.x) )`**
+- **E201 / E202** — Same "no space right inside parentheses" issue: `( CalculateTotal(c.x) )` → `print(CalculateTotal(c.x))`.
+- **W292 (no newline at end of file)** — Every file should end with a newline character. Your last line doesn't have one — just press Enter after the last line before saving.
+
+---
+
+# SECTION 2 — Issues the Linter Won't Catch
+
+1. **Naming conventions (PEP 8):**
+   - `CalculateTotal` should be `calculate_total` — PEP 8 specifies functions and variables should use **snake_case**, not **CamelCase** (CamelCase is reserved for class names).
+   - `Total` (inside the function) should be lowercase: `total`. Same snake_case rule applies to local variables.
+   - `shopping_cart` — this is actually good spelling but classes should use **CapWords/PascalCase**, so it should be `ShoppingCart`, not `shopping_cart`.
+   - `self.x` is a poor variable name — it gives no indication of what it stores. Since it holds cart items, something like `self.items` would be far more descriptive.
+
+2. **Missing docstrings (PEP 257):**
+   - Neither `CalculateTotal` nor the `shopping_cart` class nor its methods (`__init__`, `add`) have docstrings explaining what they do, what parameters they expect, or what they return. For example:
+     ```python
+     def calculate_total(items):
+         """Return the sum of all numeric values in items."""
+     ```
+   - PEP 257 recommends every public module, function, class, and method have a docstring, especially for anything reusable or non-trivial.
+
+3. **Design/clarity issues:**
+   - `CalculateTotal` is a standalone function, but it operates specifically on cart-like data. It might make more sense as a method on `shopping_cart`, e.g., `cart.total()`, improving cohesion.
+   - There's no validation in `add()` — nothing stops you from adding non-numeric items, which would break `C

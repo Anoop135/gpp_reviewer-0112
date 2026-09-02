@@ -2,6 +2,29 @@
 <html>
 <head>
     <title>GPP - PEP 8 Reviewer</title>
+    <style>
+    .report {
+        background: #f9f9f9;
+        padding: 24px;
+        border-radius: 8px;
+        line-height: 1.6;
+    }
+    .report h1, .report h2 { margin-top: 24px; }
+    .report code {
+        background: #eee;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-size: 90%;
+    }
+    .report pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 14px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+    .report pre code { background: none; color: inherit; }
+</style>
 </head>
 <body style="font-family: sans-serif; max-width: 700px; margin: 60px auto;">
     <h1>GPP — PEP 8 Learning Assistant</h1>
@@ -12,8 +35,8 @@
     </form>
 
     {% if report %}
-        <h2>Review result</h2>
-        <pre style="background: #f4f4f4; padding: 20px; white-space: pre-wrap;">{{ report }}</pre>
+    <h2>Review result</h2>
+    <div class="report">{{ report | safe }}</div>
     {% endif %}
 </body>
 </html>
