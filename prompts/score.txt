@@ -1,0 +1,19 @@
+Here is a student's Python code:
+{code}
+
+Here is a review of it:
+{review}
+
+Count the distinct issues found in the review and return ONLY a JSON
+object, no other text, in exactly this shape:
+
+{{"formatting": 0, "naming": 0, "docstrings": 0, "clarity": 0, "summary": "one sentence on the main thing to fix"}}
+
+Counting rules:
+- formatting: spacing, blank lines, line length, indentation issues
+- naming: functions/variables/classes not following snake_case or PascalCase
+- docstrings: functions, classes, or methods missing a docstring
+- clarity: vague names, unclear structure, redundant code
+
+Count each distinct issue once. The summary should be encouraging and
+name the single most useful thing to fix first.

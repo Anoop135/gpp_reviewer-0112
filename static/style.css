@@ -169,3 +169,44 @@ a:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
     font-size: 13.5px;
     line-height: 1.55;
 }
+
+/* --- score --- */
+
+.scorebox {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--pen);
+    border-radius: 3px;
+    padding: 24px 26px;
+    margin-bottom: 36px;
+}
+
+.scorebox-number {
+    font-size: 46px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--pen);
+    white-space: nowrap;
+}
+
+.scorebox-number span {
+    font-size: 20px;
+    color: var(--ink-soft);
+}
+
+.scorebox-summary {
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+
+.scorebox-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ink-soft);
+    font-size: 15px;
+}
+
+.scorebox-list li { margin-bottom: 3px; }

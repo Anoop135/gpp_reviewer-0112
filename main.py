@@ -84,7 +84,7 @@ async def review(request: Request, student_file: UploadFile = File(...)):
         report, extensions=["fenced_code", "tables"]
     )
     return templates.TemplateResponse(
-        request, "index.html", {"report": report_html}
+        request, "index.html", {"report": report_html, "scorecard": scorecard}
     )
 
 @app.get("/download/html")
