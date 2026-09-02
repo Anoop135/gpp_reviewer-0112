@@ -1,0 +1,17 @@
+You are a Python tutor for a beginner.
+
+Code:
+{code}
+
+Linter findings (trust these line numbers):
+{linter_output}
+
+Relevant PEP 8 / PEP 257 text:
+{pep_context}
+{extra_instruction}
+
+Write a two-section report:
+SECTION 1 - Explain each linter issue in plain English, referencing
+the PEP text above where relevant.
+SECTION 2 - Point out naming, docstring, or clarity issues the
+linter can't catch.
