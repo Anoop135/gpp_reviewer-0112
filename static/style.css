@@ -1,0 +1,171 @@
+:root {
+    --paper: #FBFAF8;
+    --ink: #1C1E26;
+    --ink-soft: #5A5F6E;
+    --rule: #E2DFD9;
+    --pen: #4B4FA6;
+    --pen-wash: #EEEEF8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0 24px 96px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.65;
+}
+
+.wrap { max-width: 660px; margin: 0 auto; }
+
+header {
+    padding: 72px 0 32px;
+    border-bottom: 1px solid var(--rule);
+}
+
+h1 {
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+}
+
+.lede {
+    margin: 0;
+    color: var(--ink-soft);
+    max-width: 46ch;
+}
+
+/* --- upload --- */
+
+.upload {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+label.file {
+    display: block;
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    padding: 28px 24px;
+    cursor: pointer;
+    background: #fff;
+    transition: border-color .15s, background .15s;
+}
+
+label.file:hover,
+label.file:focus-within {
+    border-color: var(--pen);
+    background: var(--pen-wash);
+}
+
+label.file input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.file-prompt { font-weight: 600; }
+
+.file-hint {
+    display: block;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+}
+
+#chosen {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    color: var(--pen);
+    margin-top: 14px;
+    min-height: 1.2em;
+}
+
+button {
+    margin-top: 20px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--pen);
+    border: none;
+    border-radius: 4px;
+    padding: 11px 22px;
+    cursor: pointer;
+}
+
+button:hover { background: #3C3F8C; }
+
+button:focus-visible,
+a:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
+
+.wait {
+    margin: 14px 0 0;
+    font-size: 15px;
+    color: var(--ink-soft);
+}
+
+/* --- report --- */
+
+.result { padding-top: 40px; }
+
+.result-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.result-head h2 { font-size: 24px; font-weight: 600; margin: 0; }
+
+.downloads { font-size: 15px; }
+
+.downloads a {
+    color: var(--pen);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
+.downloads a:hover { color: var(--ink); }
+.downloads span { color: var(--rule); margin: 0 8px; }
+
+.report h1, .report h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+}
+
+.report h3 { font-size: 17px; margin: 26px 0 6px; }
+
+.report ul { padding-left: 20px; }
+.report li { margin-bottom: 8px; }
+
+.report code, .lede code  {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    background: var(--pen-wash);
+    color: var(--pen);
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+.report pre {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--pen);
+    border-radius: 3px;
+    padding: 14px 16px;
+    overflow-x: auto;
+}
+
+.report pre code {
+    background: none;
+    color: var(--ink);
+    padding: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+}

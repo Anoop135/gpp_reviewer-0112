@@ -13,8 +13,10 @@ import markdown
 import io
 from fastapi.responses import StreamingResponse
 from report_export import build_html, build_pdf
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 LAST_REPORT = {"markdown": "", "filename": ""}
 templates = Jinja2Templates(directory="templates")
 
