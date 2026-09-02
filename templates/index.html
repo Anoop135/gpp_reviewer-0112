@@ -36,7 +36,7 @@
         </form>
     </section>
 
-    {% if report %}
+        {% if report %}
     <section class="result">
         <div class="result-head">
             <h2>What I found</h2>
@@ -46,6 +46,21 @@
                 <a href="/download/pdf">Save as PDF</a>
             </p>
         </div>
+
+        {% if scorecard %}
+        <div class="scorebox">
+            <div class="scorebox-number">{{ scorecard.score }}<span>/100</span></div>
+            <div class="scorebox-body">
+                <p class="scorebox-summary">{{ scorecard.summary }}</p>
+                <ul class="scorebox-list">
+                    {% for d in scorecard.deductions %}
+                    <li>{{ d.count }} {{ d.category }} {% if d.count == 1 %}issue{% else %}issues{% endif %} — {{ d.points_lost }} points</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="report">{{ report | safe }}</div>
     </section>
     {% endif %}

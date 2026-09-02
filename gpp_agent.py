@@ -12,6 +12,14 @@ from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from anthropic import Anthropic
 from retrieve import load_index, retrieve_relevant_chunks
+import json
+
+POINTS = {
+    "formatting": 2,
+    "naming": 5,
+    "docstrings": 4,
+    "clarity": 3,
+}
 
 MAX_PASSES = 2  # each extra pass = another full API call; 2 balances
                 # thoroughness against cost for a beginner-facing tool
@@ -139,6 +147,36 @@ def build_graph():
 
     return graph.compile()
 
+def score_review(code, review):
+    """Return a 0-100 score with a breakdown of what cost points."""
+    raw = call_claude(load_prompt("score", code=code, review=review))
+
+    cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+
+    try:
+        counts = json.loads(cleaned)
+    except json.JSONDecodeError:
+        return None
+
+    deductions = []
+    total_lost = 0
+
+    for category, cost in POINTS.items():
+        count = counts.get(category, 0)
+        if count:
+            lost = count * cost
+            total_lost += lost
+            deductions.append({
+                "category": category,
+                "count": count,
+                "points_lost": lost,
+            })
+
+    return {
+        "score": max(0, 100 - total_lost),
+        "deductions": deductions,
+        "summary": counts.get("summary", ""),
+    }
 
 def review_file(file_path):
     code = Path(file_path).read_text()
@@ -165,10 +203,16 @@ def review_file(file_path):
     final_state = agent.invoke(initial_state)
 
     print(f"\nFinished after {final_state['pass_count']} pass(es).")
-    return final_state["review"]
+
+    review = final_state["review"]
+    scorecard = score_review(code, review)
+
+    return review, scorecard
 
 
 if __name__ == "__main__":
-    report = review_file("sample_student.py")
+    report, scorecard = review_file("sample_student.py")
     Path("report_agent.txt").write_text(report, encoding="utf-8")
+    if scorecard:
+        print(f"\nScore: {scorecard['score']}/100 — {scorecard['summary']}")
     print("Done. See report_agent.txt")
