@@ -10,8 +10,12 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from anthropic import Anthropic
 import markdown
+import io
+from fastapi.responses import StreamingResponse
+from report_export import build_html, build_pdf
 
 app = FastAPI()
+LAST_REPORT = {"markdown": "", "filename": ""}
 templates = Jinja2Templates(directory="templates")
 
 UPLOAD_FOLDER = Path("uploads")
@@ -70,8 +74,36 @@ async def review(request: Request, student_file: UploadFile = File(...)):
     save_path.write_bytes(contents)
 
     report = review_file(save_path)
-    report_html = markdown.markdown(report, extensions=["fenced_code", "tables"])
+
+    LAST_REPORT["markdown"] = report
+    LAST_REPORT["filename"] = student_file.filename
+
+    report_html = markdown.markdown(
+        report, extensions=["fenced_code", "tables"]
+    )
     return templates.TemplateResponse(
         request, "index.html", {"report": report_html}
     )
-   
+
+@app.get("/download/html")
+def download_html():
+    html = build_html(LAST_REPORT["markdown"], LAST_REPORT["filename"])
+    return StreamingResponse(
+        io.BytesIO(html.encode("utf-8")),
+        media_type="text/html",
+        headers={
+            "Content-Disposition": f'attachment; filename="gpp_review_{LAST_REPORT["filename"]}.html"'
+        },
+    )
+
+
+@app.get("/download/pdf")
+def download_pdf():
+    pdf_bytes = build_pdf(LAST_REPORT["markdown"], LAST_REPORT["filename"])
+    return StreamingResponse(
+        io.BytesIO(pdf_bytes),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="gpp_review_{LAST_REPORT["filename"]}.pdf"'
+        },
+    )

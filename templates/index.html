@@ -34,9 +34,14 @@
         <button type="submit">Submit for review</button>
     </form>
 
-    {% if report %}
+{% if report %}
     <h2>Review result</h2>
+    <p>
+        <a href="/download/html">Download as HTML</a>
+        &nbsp;·&nbsp;
+        <a href="/download/pdf">Download as PDF</a>
+    </p>
     <div class="report">{{ report | safe }}</div>
-    {% endif %}
+{% endif %}
 </body>
 </html>
