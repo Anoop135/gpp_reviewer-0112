@@ -26,7 +26,6 @@ GPP combines four layers, built incrementally:
 
 ## Project structure
 gpp-project/
-├── app.py # Flask web UI
 ├── main.py # FastAPI web UI (same logic, different framework)
 ├── templates/
 │ └── index.html # shared UI template
@@ -37,7 +36,6 @@ gpp-project/
 ├── fetch_pep_docs.py # downloads real PEP 8 / PEP 257 text
 ├── build_index.py # chunks PEP docs, builds TF-IDF index
 ├── retrieve.py # finds relevant PEP chunks via cosine similarity
-├── scorecard.py # evaluation: precision/recall against known sample files
 ├── eval_samples/ # test files + hand-written ground truth
 ├── pep_docs/ # fetched PEP 8/257 text (source data)
 └── requirements.txt
@@ -62,14 +60,10 @@ python gpp_agent.py    # full agent, up to 2 passes
 
 **Web UI:**
 ```bash
-python app.py                                    # Flask, http://localhost:5000
 uvicorn main:app --host 0.0.0.0 --port 8000       # FastAPI, http://localhost:8000
 ```
 
 **Evaluation scorecard:**
-```bash
-python scorecard.py
-```
 Runs the reviewer against `eval_samples/` and computes precision/recall
 against hand-written ground truth. Current result: 100% recall / 100%
 precision on a 4-file set — note this is a small, self-authored test
